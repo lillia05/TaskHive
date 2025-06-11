@@ -9,7 +9,7 @@ include '../includes/header.php';
 $user_id = $_SESSION['user_id'];
 $category_id = intval($_GET['id']);
 
-// Get category data
+// mengambil data kategori berdasarkan ID dan user_id
 $category_query = "SELECT * FROM categories WHERE id = $category_id AND user_id = $user_id";
 $category_result = mysqli_query($conn, $category_query);
 $category = mysqli_fetch_assoc($category_result);
