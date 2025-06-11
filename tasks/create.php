@@ -91,7 +91,7 @@ $base_path = '../';
                                         <select name="status_id" class="form-select" required>
                                             <option value="">Select Status</option>
                                             <?php
-                                            $statuses = mysqli_query($conn, "SELECT * FROM status WHERE user_id = $user_id ORDER BY order_position");
+                                            $statuses = mysqli_query($conn, "SELECT * FROM status WHERE user_id = $user_id ORDER BY name");
                                             while ($stat = mysqli_fetch_assoc($statuses)) {
                                                 echo "<option value='{$stat['id']}'>{$stat['name']}</option>";
                                             }
@@ -104,10 +104,6 @@ $base_path = '../';
                                         <input type="date" name="due_date" class="form-control">
                                     </div>
                                     
-                                    <div class="mb-3">
-                                        <label for="reminder_date" class="form-label">Reminder Date & Time</label>
-                                        <input type="datetime-local" name="reminder_date" class="form-control">
-                                    </div>
                                 </div>
                             </div>
                             
@@ -135,10 +131,9 @@ if (isset($_POST['create'])) {
     $priority_id = intval($_POST['priority_id']);
     $status_id = intval($_POST['status_id']);
     $due_date = $_POST['due_date'] ? "'{$_POST['due_date']}'" : 'NULL';
-    $reminder_date = $_POST['reminder_date'] ? "'{$_POST['reminder_date']}'" : 'NULL';
     
-    $query = "INSERT INTO tasks (user_id, title, description, category_id, priority_id, status_id, due_date, reminder_date) 
-              VALUES ($user_id, '$title', '$description', $category_id, $priority_id, $status_id, $due_date, $reminder_date)";
+    $query = "INSERT INTO tasks (user_id, title, description, category_id, priority_id, status_id, due_date) 
+              VALUES ($user_id, '$title', '$description', $category_id, $priority_id, $status_id, $due_date)";
     
     if (mysqli_query($conn, $query)) {
         echo "<script>

@@ -114,11 +114,6 @@ if (!$task) {
                                         <input type="date" name="due_date" class="form-control" value="<?php echo $task['due_date']; ?>">
                                     </div>
                                     
-                                    <div class="mb-3">
-                                        <label for="reminder_date" class="form-label">Reminder Date & Time</label>
-                                        <input type="datetime-local" name="reminder_date" class="form-control" 
-                                               value="<?php echo $task['reminder_date'] ? date('Y-m-d\TH:i', strtotime($task['reminder_date'])) : ''; ?>">
-                                    </div>
                                 </div>
                             </div>
                             
@@ -146,7 +141,6 @@ if (isset($_POST['update'])) {
     $priority_id = intval($_POST['priority_id']);
     $status_id = intval($_POST['status_id']);
     $due_date = $_POST['due_date'] ? "'{$_POST['due_date']}'" : 'NULL';
-    $reminder_date = $_POST['reminder_date'] ? "'{$_POST['reminder_date']}'" : 'NULL';
     
     //Periksa apakah status selesai untuk mengatur completed_at
     $status_check = mysqli_fetch_assoc(mysqli_query($conn, "SELECT is_completed FROM status WHERE id = $status_id"));
@@ -159,7 +153,6 @@ if (isset($_POST['update'])) {
               priority_id = $priority_id, 
               status_id = $status_id, 
               due_date = $due_date, 
-              reminder_date = $reminder_date,
               completed_at = $completed_at
               WHERE id = $task_id AND user_id = $user_id";
     
