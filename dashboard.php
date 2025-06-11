@@ -7,7 +7,7 @@ include 'includes/header.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Get statistics
+// mengambil statistik tugas untuk pengguna
 $total_tasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM tasks WHERE user_id = $user_id"))['count'];
 $completed_tasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM tasks t JOIN status s ON t.status_id = s.id WHERE t.user_id = $user_id AND s.is_completed = true"))['count'];
 $pending_tasks = $total_tasks - $completed_tasks;
