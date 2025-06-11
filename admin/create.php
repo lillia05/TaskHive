@@ -2,7 +2,7 @@
 session_start();
 include '../config/db.php';
 
-// Check if user is admin
+// cek apakah pengguna sudah login dan memiliki hak akses admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
@@ -112,7 +112,7 @@ if (isset($_POST['simpan'])) {
     $role = $_POST['role'];
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
     
-    // Check if username or email already exists
+    // Cek apakah username atau email sudah ada
     $check_query = "SELECT * FROM users WHERE username='$username' OR email='$email'";
     $check_result = mysqli_query($conn, $check_query);
     
@@ -135,7 +135,7 @@ if (isset($_POST['simpan'])) {
         $profile_picture = time() . '_' . uniqid() . '.' . $file_extension;
         
         if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $upload_dir . $profile_picture)) {
-            // File uploaded successfully
+            // file upload berhasil
         } else {
             $profile_picture = null;
         }
@@ -147,7 +147,7 @@ if (isset($_POST['simpan'])) {
     if (mysqli_query($conn, $insert_query)) {
         $user_id = mysqli_insert_id($conn);
         
-        // Create default data for new user
+        // membuat data default untuk user baru
         createDefaultData($user_id, $conn);
         
         $_SESSION['admin_success'] = "User berhasil ditambahkan!";

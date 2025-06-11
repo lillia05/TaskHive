@@ -2,7 +2,7 @@
 session_start();
 include '../config/db.php';
 
-// Check if user is admin
+// cek apakah pengguna sudah login dan memiliki hak akses admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
@@ -14,7 +14,7 @@ include '../includes/header.php';
 
 $user_id = intval($_GET['id']);
 
-// Get user data
+// mengambil data user berdasarkan ID
 $user_query = "SELECT id, role, created_at FROM users WHERE id = $user_id";
 $user_result = mysqli_query($conn, $user_query);
 $user = mysqli_fetch_assoc($user_result);

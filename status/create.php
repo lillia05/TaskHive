@@ -8,7 +8,7 @@ include '../includes/header.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Get next order position
+// mengambil posisi order berikutnya untuk status baru
 $next_order = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(MAX(order_position), 0) + 1 as next_order FROM status WHERE user_id = $user_id"))['next_order'];
 ?>
 

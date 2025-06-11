@@ -9,7 +9,7 @@ if (!$conn) {
     die("Koneksi gagal: " . mysqli_connect_error());
 }
 
-// Function to create default data for new user
+// fungsi untuk membuat data default
 function createDefaultData($user_id, $conn) {
     // Default Categories
     $categories = [

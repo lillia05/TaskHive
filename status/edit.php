@@ -9,7 +9,7 @@ include '../includes/header.php';
 $user_id = $_SESSION['user_id'];
 $status_id = intval($_GET['id']);
 
-// Get status data
+// mengambil data status berdasarkan ID dan user_id
 $status_query = "SELECT * FROM status WHERE id = $status_id AND user_id = $user_id";
 $status_result = mysqli_query($conn, $status_query);
 $status = mysqli_fetch_assoc($status_result);

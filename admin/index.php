@@ -2,7 +2,7 @@
 session_start();
 include '../config/db.php';
 
-// Check if user is admin
+// cek apakah pengguna sudah login dan memiliki hak akses admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
@@ -12,7 +12,7 @@ $page_title = 'Admin Panel';
 $base_path = '../';
 include '../includes/header.php';
 
-// Get statistics
+// mengambil statistik pengguna
 $total_users = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM users"))['count'];
 $total_admins = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM users WHERE role = 'admin'"))['count'];
 $total_regular_users = $total_users - $total_admins;
