@@ -39,7 +39,7 @@ if (!isset($_SESSION['user_id'])) {
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-gear"></i> Settings
+                            <i class="bi bi-gear"></i> Task Options
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<?php echo isset($base_path) ? $base_path : ''; ?>categories/index.php">Categories</a></li>
