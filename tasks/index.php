@@ -8,7 +8,7 @@ include '../includes/header.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Handle filters
+//menangani filter
 $where_conditions = ["t.user_id = $user_id"];
 $filter_category = isset($_GET['category']) ? $_GET['category'] : '';
 $filter_priority = isset($_GET['priority']) ? $_GET['priority'] : '';
@@ -65,7 +65,7 @@ $where_clause = implode(' AND ', $where_conditions);
             </div>
         </div>
         
-        <!-- Content Area -->
+        <!-- bagian isi -->
         <div class="col-md-9 col-lg-10">
             <div class="container-fluid py-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -75,7 +75,7 @@ $where_clause = implode(' AND ', $where_conditions);
                     </a>
                 </div>
                 
-                <!-- Filters -->
+                <!-- Filter -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <form method="GET" class="row g-3">
@@ -139,7 +139,7 @@ $where_clause = implode(' AND ', $where_conditions);
                     </div>
                 </div>
                 
-                <!-- Tasks Table -->
+                <!-- Tabel tugas -->
                 <div class="card">
                     <div class="card-body">
                         <?php
