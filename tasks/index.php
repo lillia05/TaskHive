@@ -110,7 +110,7 @@ $where_clause = implode(' AND ', $where_conditions);
                                 <select name="status" class="form-select">
                                     <option value="">All Status</option>
                                     <?php
-                                    $statuses = mysqli_query($conn, "SELECT * FROM status WHERE user_id = $user_id ORDER BY order_position");
+                                    $statuses = mysqli_query($conn, "SELECT * FROM status WHERE user_id = $user_id ORDER BY name");
                                     while ($stat = mysqli_fetch_assoc($statuses)) {
                                         $selected = ($filter_status == $stat['id']) ? 'selected' : '';
                                         echo "<option value='{$stat['id']}' $selected>{$stat['name']}</option>";

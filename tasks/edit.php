@@ -100,7 +100,7 @@ if (!$task) {
                                         <label for="status_id" class="form-label">Status *</label>
                                         <select name="status_id" class="form-select" required>
                                             <?php
-                                            $statuses = mysqli_query($conn, "SELECT * FROM status WHERE user_id = $user_id ORDER BY order_position");
+                                            $statuses = mysqli_query($conn, "SELECT * FROM status WHERE user_id = $user_id ORDER BY name");
                                             while ($stat = mysqli_fetch_assoc($statuses)) {
                                                 $selected = ($stat['id'] == $task['status_id']) ? 'selected' : '';
                                                 echo "<option value='{$stat['id']}' $selected>{$stat['name']}</option>";
