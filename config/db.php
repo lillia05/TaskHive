@@ -21,7 +21,7 @@ function createDefaultData($user_id, $conn) {
     ];
     
     foreach ($categories as $cat) {
-        mysqli_query($conn, "INSERT INTO categories (user_id, name, description, color) VALUES ($user_id, '{$cat[0]}', '{$cat[1]}', '{$cat[2]}', '{$cat[3]}')");
+        mysqli_query($conn, "INSERT INTO categories (user_id, name, description, color) VALUES ($user_id, '{$cat[0]}', '{$cat[1]}', '{$cat[2]}')");
     }
     
     // Prioritas Default
@@ -34,7 +34,7 @@ function createDefaultData($user_id, $conn) {
     ];
     
     foreach ($priorities as $pri) {
-        mysqli_query($conn, "INSERT INTO priorities (user_id, name, level, color) VALUES ($user_id, '{$pri[0]}', {$pri[1]}, '{$pri[2]}', '{$pri[3]}')");
+        mysqli_query($conn, "INSERT INTO priorities (user_id, name, level, color) VALUES ($user_id, '{$pri[0]}', {$pri[1]}, '{$pri[2]}')");
     }
     
     // Status Default
@@ -46,7 +46,7 @@ function createDefaultData($user_id, $conn) {
     
     foreach ($statuses as $stat) {
         $completed = $stat[1] ? 'true' : 'false';
-        mysqli_query($conn, "INSERT INTO status (user_id, name, is_completed, color) VALUES ($user_id, '{$stat[0]}', $completed, '{$stat[2]}', {$stat[3]}, '{$stat[4]}')");
+        mysqli_query($conn, "INSERT INTO status (user_id, name, is_completed, color) VALUES ($user_id, '{$stat[0]}', $completed, '{$stat[2]}')");
     }
 }
 ?>
