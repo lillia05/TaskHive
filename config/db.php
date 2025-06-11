@@ -11,7 +11,7 @@ if (!$conn) {
 
 // fungsi untuk membuat data default
 function createDefaultData($user_id, $conn) {
-    // Default Categories
+    //Kategori default
     $categories = [
         ['College', 'College tasks and activities', '#3498db', 'book'],
         ['Organization', 'Organization activities and tasks', '#e74c3c', 'people'],
@@ -24,20 +24,20 @@ function createDefaultData($user_id, $conn) {
         mysqli_query($conn, "INSERT INTO categories (user_id, name, description, color, icon) VALUES ($user_id, '{$cat[0]}', '{$cat[1]}', '{$cat[2]}', '{$cat[3]}')");
     }
     
-    // Default Priorities
+    // Priotitas default
     $priorities = [
-        ['Low', 1, '#95a5a6', 'flag'],
-        ['Normal', 2, '#3498db', 'flag'],
-        ['Medium', 3, '#f39c12', 'flag'],
-        ['High', 4, '#e67e22', 'flag'],
-        ['Critical', 5, '#e74c3c', 'exclamation']
+        ['Normal', 1, '#95a5a6', 'flag'],
+        ['Medium', 2, '#3498db', 'flag'],
+        ['Important', 3, '#f39c12', 'flag'],
+        ['Very Important', 4, '#e67e22', 'flag'],
+        ['Urgent', 5, '#e74c3c', 'exclamation']
     ];
     
     foreach ($priorities as $pri) {
         mysqli_query($conn, "INSERT INTO priorities (user_id, name, level, color, icon) VALUES ($user_id, '{$pri[0]}', {$pri[1]}, '{$pri[2]}', '{$pri[3]}')");
     }
     
-    // Default Status
+    //status default
     $statuses = [
         ['To Do', false, '#95a5a6', 1, 'circle'],
         ['In Progress', false, '#3498db', 2, 'play'],
