@@ -13,10 +13,11 @@ if (!$conn) {
 function createDefaultData($user_id, $conn) {
     // Default Categories
     $categories = [
-        ['Personal', 'Personal tasks and activities', '#e74c3c', 'person'],
-        ['Work', 'Work-related tasks', '#2ecc71', 'briefcase'],
-        ['Shopping', 'Shopping lists and purchases', '#f39c12', 'cart'],
-        ['Health', 'Health and fitness activities', '#9b59b6', 'heart']
+        ['College', 'College tasks and activities', '#3498db', 'book'],
+        ['Organization', 'Organization activities and tasks', '#e74c3c', 'people'],
+        ['Personal', 'Personal tasks and activities', '#2ecc71', 'person'],
+        ['Daily', 'Daily activities and tasks', '#f39c12', 'calendar'],
+        ['Work', 'Work-related tasks', '#9b59b6', 'briefcase']
     ];
     
     foreach ($categories as $cat) {
