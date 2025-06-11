@@ -70,11 +70,6 @@ if (!$status) {
                                             <option value="1" <?php echo ($status['is_completed']) ? 'selected' : ''; ?>>Completed</option>
                                         </select>
                                     </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="order_position" class="form-label">Order Position</label>
-                                        <input type="number" name="order_position" class="form-control" value="<?php echo $status['order_position']; ?>" min="1">
-                                    </div>
                                 </div>
                                 
                                 <div class="col-md-6">
@@ -105,13 +100,11 @@ if (!$status) {
 if (isset($_POST['update'])) {
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $is_completed = intval($_POST['is_completed']);
-    $order_position = intval($_POST['order_position']);
     $color = mysqli_real_escape_string($conn, $_POST['color']);
     
     $query = "UPDATE status SET 
               name = '$name', 
-              is_completed = $is_completed, 
-              order_position = $order_position, 
+              is_completed = $is_completed,  
               color = '$color'
               WHERE id = $status_id AND user_id = $user_id";
     

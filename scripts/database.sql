@@ -44,7 +44,6 @@ CREATE TABLE status (
     name VARCHAR(50) NOT NULL,
     is_completed BOOLEAN DEFAULT false,
     color VARCHAR(7) NOT NULL,
-    order_position INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

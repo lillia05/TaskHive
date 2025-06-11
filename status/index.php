@@ -50,7 +50,7 @@ $user_id = $_SESSION['user_id'];
                 <div class="card">
                     <div class="card-body">
                         <?php
-                        $status_query = "SELECT * FROM status WHERE user_id = $user_id ORDER BY order_position";
+                        $status_query = "SELECT * FROM status WHERE user_id = $user_id ORDER BY name";
                         $status_result = mysqli_query($conn, $status_query);
                         
                         if (mysqli_num_rows($status_result) > 0):
@@ -61,7 +61,6 @@ $user_id = $_SESSION['user_id'];
                                     <tr>
                                         <th>Name</th>
                                         <th>Type</th>
-                                        <th>Order</th>
                                         <th>Color</th>
                                         <th>Tasks Count</th>
                                         <th>Created</th>
@@ -81,9 +80,6 @@ $user_id = $_SESSION['user_id'];
                                             <span class="badge bg-<?php echo $status['is_completed'] ? 'success' : 'warning'; ?>">
                                                 <?php echo $status['is_completed'] ? 'Completed' : 'In Progress'; ?>
                                             </span>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-secondary"><?php echo $status['order_position']; ?></span>
                                         </td>
                                         <td>
                                             <span class="badge" style="background-color: <?php echo $status['color']; ?>">

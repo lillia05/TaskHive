@@ -8,8 +8,7 @@ include '../includes/header.php';
 
 $user_id = $_SESSION['user_id'];
 
-// mengambil posisi order berikutnya untuk status baru
-$next_order = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(MAX(order_position), 0) + 1 as next_order FROM status WHERE user_id = $user_id"))['next_order'];
+
 ?>
 
 <div class="container-fluid">
@@ -62,11 +61,6 @@ $next_order = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(MAX(order_
                                             <option value="1">Completed</option>
                                         </select>
                                     </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="order_position" class="form-label">Order Position</label>
-                                        <input type="number" name="order_position" class="form-control" value="<?php echo $next_order; ?>" min="1">
-                                    </div>
                                 </div>
                                 
                                 <div class="col-md-6">
@@ -97,11 +91,10 @@ $next_order = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(MAX(order_
 if (isset($_POST['create'])) {
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $is_completed = intval($_POST['is_completed']);
-    $order_position = intval($_POST['order_position']);
     $color = mysqli_real_escape_string($conn, $_POST['color']);
     
-    $query = "INSERT INTO status (user_id, name, is_completed, order_position, color) 
-              VALUES ($user_id, '$name', $is_completed, $order_position, '$color')";
+    $query = "INSERT INTO status (user_id, name, is_completed, color) 
+              VALUES ($user_id, '$name', $is_completed,'$color')";
     
     if (mysqli_query($conn, $query)) {
         echo "<script>
