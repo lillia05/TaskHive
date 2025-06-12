@@ -2,15 +2,99 @@
 session_start();
 include 'config/db.php';
 
-$page_title = 'Profile';
-include 'includes/header.php';
-
 $user_id = $_SESSION['user_id'];
 
-//mengambil data pengguna
+// proses update profile
+if (isset($_POST['update_profile'])) {
+    $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
+    
+    // Mengambil data user saat ini
+    $user_query = "SELECT * FROM users WHERE id = $user_id";
+    $user_result = mysqli_query($conn, $user_query);
+    $user = mysqli_fetch_assoc($user_result);
+    
+    //cek apakah username atau email sudah tersedia
+    $check_query = "SELECT * FROM users WHERE (username='$username' OR email='$email') AND id != $user_id";
+    $check_result = mysqli_query($conn, $check_query);
+    
+    if (mysqli_num_rows($check_result) > 0) {
+        $_SESSION['profile_error'] = "Username atau email sudah digunakan oleh user lain.";
+    } else {
+        //menangani ganti password
+        $password_update = "";
+        if (!empty($new_password)) {
+            if ($new_password !== $confirm_password) {
+                $_SESSION['profile_error'] = "Password konfirmasi tidak cocok.";
+                header("Location: profile.php");
+                exit;
+            }
+            $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+            $password_update = ", password = '$password_hash'";
+        }
+        
+        //menangani file upload
+        $picture_update = "";
+        if (!empty($_FILES['profile_picture']['name'])) {
+            $upload_dir = 'uploads/';
+            if (!file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
+            }
+            
+            //menghapus foto lama
+            if (!empty($user['profile_picture']) && file_exists($upload_dir . $user['profile_picture'])) {
+                unlink($upload_dir . $user['profile_picture']);
+            }
+            
+            // Gunakan nama file asli
+            $new_filename = $_FILES['profile_picture']['name'];
+            
+            // Cek apakah file sudah ada, jika ya tambahkan nomor
+            $original_name = pathinfo($new_filename, PATHINFO_FILENAME);
+            $file_extension = pathinfo($new_filename, PATHINFO_EXTENSION);
+            $counter = 1;
+            
+            while (file_exists($upload_dir . $new_filename)) {
+                $new_filename = $original_name . '_' . $counter . '.' . $file_extension;
+                $counter++;
+            }
+            
+            if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $upload_dir . $new_filename)) {
+                $picture_update = ", profile_picture = '$new_filename'";
+            }
+        }
+        
+        $update_query = "UPDATE users SET 
+                        full_name = '$full_name', 
+                        username = '$username', 
+                        email = '$email'
+                        $password_update
+                        $picture_update
+                        WHERE id = $user_id";
+        
+        if (mysqli_query($conn, $update_query)) {
+            $_SESSION['full_name'] = $full_name;
+            $_SESSION['username'] = $username;
+            $_SESSION['profile_success'] = "Profile berhasil diupdate!";
+        } else {
+            $_SESSION['profile_error'] = "Terjadi kesalahan saat mengupdate profile.";
+        }
+    }
+    
+    header("Location: profile.php");
+    exit;
+}
+
+// Mengambil data user untuk ditampilkan
 $user_query = "SELECT * FROM users WHERE id = $user_id";
 $user_result = mysqli_query($conn, $user_query);
 $user = mysqli_fetch_assoc($user_result);
+
+$page_title = 'Profile';
+include 'includes/header.php';
 ?>
 
 <div class="container-fluid">
@@ -184,84 +268,4 @@ $user = mysqli_fetch_assoc($user_result);
     </div>
 </div>
 
-<?php
-if (isset($_POST['update_profile'])) {
-    $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $new_password = $_POST['new_password'];
-    $confirm_password = $_POST['confirm_password'];
-    
-    //cek apakah username atau email sudah tersedia
-    $check_query = "SELECT * FROM users WHERE (username='$username' OR email='$email') AND id != $user_id";
-    $check_result = mysqli_query($conn, $check_query);
-    
-    if (mysqli_num_rows($check_result) > 0) {
-        $_SESSION['profile_error'] = "Username atau email sudah digunakan oleh user lain.";
-    } else {
-        //menangani ganti password
-        $password_update = "";
-        if (!empty($new_password)) {
-            if ($new_password !== $confirm_password) {
-                $_SESSION['profile_error'] = "Password konfirmasi tidak cocok.";
-                header("Location: profile.php");
-                exit;
-            }
-            $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
-            $password_update = ", password = '$password_hash'";
-        }
-        
-        //menangani file upload
-        $picture_update = "";
-        if (!empty($_FILES['profile_picture']['name'])) {
-            $upload_dir = 'uploads/';
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-            
-            //menghapus foto lama
-            if (!empty($user['profile_picture']) && file_exists($upload_dir . $user['profile_picture'])) {
-                unlink($upload_dir . $user['profile_picture']);
-            }
-            
-            // Gunakan nama file asli
-            $new_filename = $_FILES['profile_picture']['name'];
-            
-            // Cek apakah file sudah ada, jika ya tambahkan nomor
-            $original_name = pathinfo($new_filename, PATHINFO_FILENAME);
-            $file_extension = pathinfo($new_filename, PATHINFO_EXTENSION);
-            $counter = 1;
-            
-            while (file_exists($upload_dir . $new_filename)) {
-                $new_filename = $original_name . '_' . $counter . '.' . $file_extension;
-                $counter++;
-            }
-            
-            if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $upload_dir . $new_filename)) {
-                $picture_update = ", profile_picture = '$new_filename'";
-            }
-        }
-        
-        $update_query = "UPDATE users SET 
-                        full_name = '$full_name', 
-                        username = '$username', 
-                        email = '$email'
-                        $password_update
-                        $picture_update
-                        WHERE id = $user_id";
-        
-        if (mysqli_query($conn, $update_query)) {
-            $_SESSION['full_name'] = $full_name;
-            $_SESSION['username'] = $username;
-            $_SESSION['profile_success'] = "Profile berhasil diupdate!";
-        } else {
-            $_SESSION['profile_error'] = "Terjadi kesalahan saat mengupdate profile.";
-        }
-    }
-    
-    header("Location: profile.php");
-    exit;
-}
-
-include 'includes/footer.php';
-?>
+<?php include 'includes/footer.php'; ?>
